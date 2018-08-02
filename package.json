@@ -11,8 +11,14 @@
   },
   "dependencies": {
     "ajv": "^6.5.2",
+    "babel-polyfill": "^6.26.0",
+    "child_process": "^1.0.2",
+    "flyio": "^0.6.0",
+    "fs": "0.0.1-security",
     "less": "^2.7.3",
     "mpvue": "^1.0.11",
+    "mpvue-router-patch": "^0.2.1",
+    "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.17",
     "vuex": "^3.0.1"
   },

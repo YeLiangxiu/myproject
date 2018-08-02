@@ -1,5 +1,12 @@
+<template>
+  <div id="app">
+    <router-view/>
+  </div>
+</template>
 <script>
 export default {
+  name: 'App',
+  mpType: 'app',
   created () {
     // 调用API从本地缓存中获取数据
     const logs = wx.getStorageSync('logs') || []

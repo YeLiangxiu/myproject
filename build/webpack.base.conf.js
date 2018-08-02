@@ -20,8 +20,9 @@ function getEntry (rootSrc, pattern) {
   }, {})
 }
 
+
 const appEntry = { app: resolve('./src/main.js') }
-const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js')
+const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js') // 每个路由配置main
 const entry = Object.assign({}, appEntry, pagesEntry)
 
 module.exports = {
@@ -30,6 +31,10 @@ module.exports = {
   // toPath 为相对于 dist 的路径, 例：index/demo，则生成的文件地址为 dist/index/demo.js
   entry,
   target: require('mpvue-webpack-target'),
+  context: path.resolve(__dirname, '../'),
+  // entry: {
+  //   app: ['babel-polyfill', './src/main.js']
+  // },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -41,11 +46,13 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue': 'mpvue',
-      '@': resolve('src')
+      '@': resolve('src'),
+      flyio: 'flyio/dist/npm/wx',
+      wx: resolve('src/utils/wx')
     },
-    symlinks: false,
-    aliasFields: ['mpvue', 'weapp', 'browser'],
-    mainFields: ['browser', 'module', 'main']
+    // symlinks: false,
+    // aliasFields: ['mpvue', 'weapp', 'browser'],
+    // mainFields: ['browser', 'module', 'main']
   },
   module: {
     rules: [
@@ -92,6 +99,18 @@ module.exports = {
         }
       }
     ]
+  },
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
   },
   plugins: [
     new MpvuePlugin()

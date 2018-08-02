@@ -1,28 +1,30 @@
 require('./check-versions')()
 
-var config = require('../config')
+const config = require('../config')
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
+const webpackConfig = process.env.NODE_ENV === 'production'
+  ? require('./webpack.prod.conf')
+  : require('./webpack.dev.conf')
 // var opn = require('opn')
-var path = require('path')
-var express = require('express')
-var webpack = require('webpack')
-var proxyMiddleware = require('http-proxy-middleware')
-var portfinder = require('portfinder')
-var webpackConfig = require('./webpack.dev.conf')
+const path = require('path')
+const express = require('express')
+const webpack = require('webpack')
+const proxyMiddleware = require('http-proxy-middleware')
+const portfinder = require('portfinder')
 
 // default port where dev server listens for incoming traffic
-var port = process.env.PORT || config.dev.port
+const port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
-var autoOpenBrowser = !!config.dev.autoOpenBrowser
+const autoOpenBrowser = !!config.dev.autoOpenBrowser
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
-var proxyTable = config.dev.proxyTable
+const proxyTable = config.dev.proxyTable
 
-var app = express()
-var compiler = webpack(webpackConfig)
+const app = express()
+const compiler = webpack(webpackConfig)
 
 // var devMiddleware = require('webpack-dev-middleware')(compiler, {
 //   publicPath: webpackConfig.output.publicPath,
@@ -61,13 +63,13 @@ app.use(require('connect-history-api-fallback')())
 // app.use(hotMiddleware)
 
 // serve pure static assets
-var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
 // var uri = 'http://localhost:' + port
 
-var _resolve
-var readyPromise = new Promise(resolve => {
+let _resolve
+let readyPromise = new Promise(resolve => {
   _resolve = resolve
 })
 
@@ -88,7 +90,7 @@ module.exports = new Promise((resolve, reject) => {
       if (port !== newPort) {
         console.log(`${port}端口被占用，开启新端口${newPort}`)
       }
-      var server = app.listen(newPort, 'localhost')
+      let server = app.listen(newPort, 'localhost')
       // for 小程序的文件保存机制
       require('webpack-dev-middleware-hard-disk')(compiler, {
         publicPath: webpackConfig.output.publicPath,

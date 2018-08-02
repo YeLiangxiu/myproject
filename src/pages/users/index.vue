@@ -14,7 +14,7 @@
 </template>
 <script>
   export default {
-    name: 'submitSuccess',
+    name: 'Users',
     data(){
       return{
 
